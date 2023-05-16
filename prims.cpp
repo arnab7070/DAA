@@ -8,7 +8,7 @@ struct Edge
     int b;
     int weight;
 };
-
+int n; // number of vertices
 #define CAPACITY 100
 class Priority_Queue
 {
@@ -67,27 +67,18 @@ public:
     }
 };
 
-Edge edgeArray[100];
-int edgeCount = 0;
+int adjMatrix[100][100];
 
 void readGraph()
 {
     fstream input;
     input.open("graph.txt", ios::in);
-    int n;
     input >> n;
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < n; j++)
         {
-            int edgeWeight;
-            input >> edgeWeight;
-            if (edgeWeight > 0)
-            {
-                edgeArray[edgeCount].a = i;
-                edgeArray[edgeCount].b = j;
-                edgeArray[edgeCount++].weight = edgeWeight;
-            }
+            input >> adjMatrix[i][j];
         }
     }
     input.close();
@@ -97,14 +88,14 @@ void primMST()
 {
     Priority_Queue pq;
     int mstWeight = 0;
-    bool visited[100] = {false};
-    visited[edgeArray[0].a] = true;
-
-    for (int i = 0; i < edgeCount; i++)
+    bool visited[n] = {false};
+    visited[0] = true; // mark source vertex as visited
+    // now traverse the adjMatrix to find the connections to the source vertex
+    for (int i = 0; i < n; i++)
     {
-        if (edgeArray[i].a == edgeArray[0].a)
+        if (adjMatrix[0][i] > 0)
         {
-            pq.insert(edgeArray[i].a, edgeArray[i].b, edgeArray[i].weight);
+            pq.insert(0, i, adjMatrix[0][i]);
         }
     }
 
@@ -117,12 +108,12 @@ void primMST()
         }
         visited[minEdge.b] = true;
         mstWeight += minEdge.weight;
-        cout << "Edge: " << minEdge.a << "-" << minEdge.b << " Weight: " << minEdge.weight << endl;
-        for (int i = 0; i < edgeCount; i++)
+        cout << "Edge: " << char('A' + minEdge.a) << "-" << char('A' + minEdge.b) << " Weight: " << minEdge.weight << endl;
+        for (int i = 0; i < n; i++)
         {
-            if (edgeArray[i].a == minEdge.b && !visited[edgeArray[i].b])
+            if (adjMatrix[minEdge.b][i] && !visited[i])
             {
-                pq.insert(edgeArray[i].a, edgeArray[i].b, edgeArray[i].weight);
+                pq.insert(minEdge.b, i, adjMatrix[minEdge.b][i]);
             }
         }
     }
