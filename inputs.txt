@@ -6,7 +6,7 @@
 0 1 0 0 1 1
 0 1 1 1 0 1
 0 0 0 1 1 0
-// For Kruskal Algorithm
+// For Kruskal Algorithm / Prims Algorithm
 6
 0 7 0 8 0 0
 7 0 6 3 0 0

@@ -89,32 +89,24 @@ void primMST()
     Priority_Queue pq;
     int mstWeight = 0;
     bool visited[n] = {false};
-    visited[0] = true; // mark source vertex as visited
-    // now traverse the adjMatrix to find the connections to the source vertex
-    for (int i = 0; i < n; i++)
-    {
-        if (adjMatrix[0][i] > 0)
-        {
-            pq.insert(0, i, adjMatrix[0][i]);
-        }
-    }
-
+    pq.insert(0, 0, 0);
     while (pq.size > 0)
     {
-        Edge minEdge = pq.extractMin();
-        if (visited[minEdge.b])
+        Edge curr = pq.extractMin();
+        if (!visited[curr.b])
         {
-            continue;
-        }
-        visited[minEdge.b] = true;
-        mstWeight += minEdge.weight;
-        cout << "Edge: " << char('A' + minEdge.a) << "-" << char('A' + minEdge.b) << " Weight: " << minEdge.weight << endl;
-        for (int i = 0; i < n; i++)
-        {
-            if (adjMatrix[minEdge.b][i] && !visited[i])
+            visited[curr.b] = true;
+            for (int i = 0; i < n; i++)
             {
-                pq.insert(minEdge.b, i, adjMatrix[minEdge.b][i]);
+                int edgeWeight = adjMatrix[curr.b][i];
+                if (edgeWeight > 0 && !visited[i])
+                {
+                    pq.insert(curr.b, i, edgeWeight);
+                }
             }
+            mstWeight += curr.weight;
+            if (curr.a != curr.b)
+                cout << "Edge: " << char('A' + curr.a) << "-" << char('A' + curr.b) << " Weight: " << curr.weight << endl;
         }
     }
     cout << "Total weight of MST: " << mstWeight << endl;
