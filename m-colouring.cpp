@@ -1,73 +1,68 @@
 #include <iostream>
 #include <fstream>
+
 using namespace std;
-int n; // number of vertex
-int graph[100][100];
-int colourGraph[100] = {0};
-int m = 0; // number of colours
-void display(int colourGraph[], int m)
-{
-    cout << "Solution is: ";
-    for (int i = 0; i <= m; i++)
-    {
-        cout << colourGraph[i] << " ";
-    }
-    cout << endl;
-}
+int graph[100][100] = {0};
+int colourGraph[100];
+int n, m;
 void readGraph()
 {
     fstream input;
     input.open("graph.txt", ios::in);
     input >> n;
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < n; i += 1)
     {
-        for (int j = 0; j < n; j++)
+        for (int j = 0; j < n; j += 1)
         {
             input >> graph[i][j];
         }
     }
     input.close();
 }
-
-bool isSafe(int currColor, int currNode)
+bool isSafe(int currNode, int currColour)
 {
     for (int i = 0; i < n; i++)
     {
-        // if edge exists & current colour is not same as adjacent colours
-        if (graph[currNode][i] && colourGraph[i] == currColor)
+        if (graph[currNode][i] && colourGraph[i] == currColour)
         {
             return false;
         }
     }
     return true;
 }
-
-bool graphColor(int node)
+void display()
 {
-    // base case
+    cout << "Solution: ";
+    for (int i = 0; i < n; i += 1)
+    {
+        cout << colourGraph[i] << " ";
+    }
+    cout << endl;
+}
+void graphColoring(int node)
+{
     if (node == n)
     {
-        // cout << "The graph can be successfully coloured by " << m << " colours\n";
-        display(colourGraph, m);
-        return true;
+        display();
     }
-    for (int i = 1; i <= m; i++)
+    else
     {
-        if (isSafe(i, node))
+        for (int i = 1; i <= m; i++)
         {
-            colourGraph[node] = i;
-            graphColor(node + 1);
-            colourGraph[node] = 0; // backtrack
+            if (isSafe(node, i))
+            {
+                colourGraph[node] = i;
+                graphColoring(node + 1);
+                colourGraph[node] = 0; // backtrack
+            }
         }
     }
-    return false;
 }
-
 int main()
 {
-    cout << "Enter the number of colours: ";
-    cin >> m;
     readGraph();
-    graphColor(0); // 0 as the starting node
+    cout << "Enter how many colours do you have? ";
+    cin >> m;
+    graphColoring(0);
     return 0;
 }
