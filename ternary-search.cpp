@@ -13,7 +13,7 @@ void ternarySearch(int arr[], int start, int end, int key)
             return;
         }
         if (key < arr[mid1])
-            return ternarySearch(arr, 0, mid1, key);
+            return ternarySearch(arr, start, mid1, key);
         else if (key > arr[mid1] && key < arr[mid2])
             return ternarySearch(arr, mid1 + 1, mid2, key);
         else
