@@ -23,9 +23,17 @@ void ternarySearch(int arr[], int start, int end, int key)
 }
 int main()
 {
-    int arr[] = {1, 4, 5, 6, 78, 89, 145, 669, 1489};
-    int n = sizeof(arr) / sizeof(int);
-    int key = 78;
+    int n;
+    cout << "Enter the size of array: ";
+    cin >> n;
+    int arr[n];
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+    int key;
+    cout << "Enter the value of key: ";
+    cin >> key;
     ternarySearch(arr, 0, n, key);
     return 0;
 }
