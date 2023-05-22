@@ -1,42 +1,47 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-int n = 4;
-int X[10];
-int place(int k, int i)
+
+int boardSize = 4;
+int board[10];
+int solutionCount = 0;
+
+int canPlace(int row, int col)
 {
-    for (int j = 1; j <= k - 1; j++)
+    for (int prevRow = 1; prevRow < row; prevRow++)
     {
-        if (X[j] == i || abs(j - k) == abs(X[j] - i))
+        if (board[prevRow] == col || abs(prevRow - row) == abs(board[prevRow] - col))
             return 0;
     }
     return 1;
 }
-int count = 0;
-void nqueen(int k, int n)
+
+void solveNQueens(int row, int boardSize)
 {
-    for (int i = 1; i <= n; i++)
+    for (int col = 1; col <= boardSize; col++)
     {
-        if (place(k, i))
+        if (canPlace(row, col))
         {
-            X[k] = i;
-            if (k == n)
+            board[row] = col;
+            if (row == boardSize)
             {
-                count++;
-                for (int j = 1; j <= n; j++)
+                solutionCount++;
+                for (int i = 1; i <= boardSize; i++)
                 {
-                    printf("%d ", X[j]);
+                    printf("%d ", board[i]);
                 }
                 printf("\n");
             }
             else
-                nqueen(k + 1, n);
+                solveNQueens(row + 1, boardSize);
         }
     }
 }
+
 int main()
 {
-    nqueen(1, n);
-    printf("Number of solution = %d\n", count);
+    solveNQueens(1, boardSize);
+    printf("Number of solutions: %d\n", solutionCount);
     return 0;
 }
+
